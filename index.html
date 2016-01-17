@@ -1,68 +1,396 @@
-<html>
-<head>
-<style>
-body {
-    background-color:#003366
+<script>
+var cellWidth = 30;
+var numCells = 10;
+var paused = true;
+var theGrid;
+var theInterval;
+
+function consoleDebugGrid(grid)
+{
+  var x,y,toPrint,maxPrint;
+  maxPrint = "";
+  for(x = 0; x < grid.length; x++)
+  {
+    toPrint = "";
+    for(y = 0; y < grid[0].length; y++)
+    {
+      toPrint = toPrint + grid[x][y]+" ";
+    }
+    maxPrint = maxPrint + toPrint + "\n";
+  }
+  console.log("debugged Grid: \n"+maxPrint);
 }
 
-h1 {
-    color:lightgray;
-    font-family:Arial;
+function drawLineFromTo(begin,end) {
+  var context = document.getElementById('canvas').getContext('2d');
+  context.beginPath();
+  context.moveTo(begin[0],begin[1]);
+  context.lineTo(end[0],end[1]);
+  context.stroke();
 }
 
-h2 {
-    color:lightgray;
-    font-family:Arial;
+function drawSquareAt(x,y,width,colorString)
+{
+  var context = document.getElementById('canvas').getContext('2d');
+  context.beginPath();
+  context.rect(x,y,width,width);
+  context.fillStyle = colorString;
+  context.fill();
+  context.stroke();
 }
 
-h5 {
-    color:lightgray;
-    font-family:Arial;
+function cellEmpty(grid, x, y)
+{
+  //console.log(x+","+y);
+  return (grid[x][y] == 0);
 }
 
-#header {
-    text-align:center;
+function getNumberOfNeighborsNoWrap(grid, x, y)
+{
+  //consoleDebugGrid(grid);
+  var i, count;
+  count = 0;
+  //try {
+    if(x > 0 && x < grid.length - 1 && y > 0 && y < grid[0].length - 1)
+    {
+      if(!cellEmpty(grid,x-1,y-1))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x-1,y))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x-1,y+1))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x,y-1))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x,y+1))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x+1,y-1))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x+1,y))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x+1,y+1))
+      {
+        count++;
+      }
+    }
+    else if(x == 0 && y == 0)
+    {
+      if(!cellEmpty(grid,x,y+1))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x+1,y))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x+1,y+1))
+      {
+        count++;
+      }
+    }
+    else if(x == 0 && y == grid.length-1)
+    {
+      if(!cellEmpty(grid,x,y-1))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x+1,y-1))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x+1,y))
+      {
+        count++;
+      }
+    }
+    else if(x == grid.length-1 && y == 0)
+    {
+      if(!cellEmpty(grid,x-1,y))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x-1,y+1))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x,y+1))
+      {
+        count++;
+      }
+    }
+    else if(x == grid.length-1 && y == grid.length-1)
+    {
+      if(!cellEmpty(grid,x-1,y-1))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x-1,y))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x,y-1))
+      {
+        count++;
+      }
+    }
+    else if(x == 0)
+    {
+      if(!cellEmpty(grid,x,y-1))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x,y+1))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x+1,y-1))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x+1,y))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x+1,y+1))
+      {
+        count++;
+      }
+    }
+    else if(y == 0)
+    {
+      if(!cellEmpty(grid,x-1,y))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x-1,y+1))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x,y+1))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x+1,y))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x+1,y+1))
+      {
+        count++;
+      }
+    }
+    else if(x == grid.length-1)
+    {
+      if(!cellEmpty(grid,x-1,y-1))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x-1,y))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x-1,y+1))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x,y-1))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x,y+1))
+      {
+        count++;
+      }
+    }
+    else if(y == grid.length-1)
+    {
+      if(!cellEmpty(grid,x-1,y-1))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x-1,y))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x,y-1))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x+1,y-1))
+      {
+        count++;
+      }
+      if(!cellEmpty(grid,x+1,y))
+      {
+        count++;
+      }
+    }
+    else
+    {
+      console.log("Oh god?");
+    }
+
+
+  //} catch (e) {
+  //  console.log("the grid was less than 3x3");
+  //}
+  return count;
 }
 
-#nav {
-    line-height:20px;
-    background-color:#005588;
-    height:1000px;
-    width:200px;
-    float:left;
-    padding:20px;
+function GOLRule(grid, x, y)
+{
+  var neighbors = getNumberOfNeighborsNoWrap(grid,x,y);
+  //console.log("grid["+x+"]["+y+"] numNeighbors= "+ neighbors);
+  switch(neighbors)
+  {
+    case 0:
+    case 1:
+      return 0;
+      break;
+    case 2:
+      if(cellEmpty(grid, x, y)) return 0;
+    case 3:
+      return 1;
+      break;
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+      return 0;
+      break;
+    default:
+      break;
+  }
+  throw "GOL RULE FAILED";
 }
 
-#content {
+function evolve(grid, rule)
+{
+  var i,x,y,tempGrid;
+
+  //We need to make tempGrid a 2D array the same dimensions as grid
+  tempGrid = new Array(grid.length);
+  for(x = 0; x < grid.length; x++)
+  {
+    tempGrid[x] = new Array(grid[0].length);
+    for(y = 0; y < grid[0].length; y++)
+    {
+      tempGrid[x][y] = 0;
+    }
+  }
+
+ //apply the rule to each item of the cells in the grid
+  for(x = 0; x < grid.length; x++)
+  {
+    for(y = 0; y < grid[0].length; y++)
+    {
+      tempGrid[x][y] = rule(grid,x,y);
+    }
+  }
+
+  return tempGrid;
+}
+
+function init() {
+
+    paused = true;
+
+    theGrid =    [[0,1,0,0,0,0,0,0,0,0],
+                  [0,0,1,0,0,0,0,0,0,0],
+                  [1,1,1,0,0,0,0,0,0,0],
+                  [0,0,0,0,0,0,0,0,0,0],
+                  [0,0,0,0,0,0,0,0,0,0],
+                  [0,0,0,0,0,0,0,0,0,0],
+                  [0,0,0,0,0,0,0,0,0,0],
+                  [0,0,0,0,0,0,0,0,0,0],
+                  [0,0,0,0,0,0,0,0,0,0],
+                  [0,0,0,0,0,0,0,0,0,0]];
+
 
 }
-    
-</style>
-<title>
-Wizard in Training
-</title>
-<head>
+
+function draw() {
+  var grid = theGrid;
+  if(!paused)
+  {
+    console.log("unpaused");
+    var x,y;
+    //draw the filled in cells
+    for(x = 0; x < 10; x++)
+    {
+      for(y = 0; y < 10; y++)
+      {
+        if(grid[x][y] != 0)
+        {
+          drawSquareAt(x*cellWidth,y*cellWidth,cellWidth,'blue');
+        }
+        else
+        {
+          drawSquareAt(x*cellWidth,y*cellWidth,cellWidth,'white');
+        }
+      }
+    }
+    //Draw gridlines
+    for(x = 0; x <= 10 * cellWidth; x += cellWidth)
+    {
+      drawLineFromTo([x,0],[x,300]);
+    }
+    for(y = 0; y <= 10 * cellWidth; y += cellWidth)
+    {
+      drawLineFromTo([0,y],[300,y]);
+    }
+
+    theGrid = evolve(grid, GOLRule);
+    consoleDebugGrid(theGrid);
+
+  }
+
+}
+
+function pauseToggle()
+{
+  if(paused)
+  {
+    console.log("Unpausing");
+    paused = false;
+    theInterval = window.setInterval(function()
+    {
+      window.requestAnimationFrame(draw);
+    },100);
+  }
+  else {
+      console.log("Pausing");
+      paused = true;
+
+      window.clearInterval(theInterval);
+  }
+}
+
+function reset()
+{
+  window.clearInterval(theInterval);
+  init();
+}
+
+init();
+</script>
 
 <body>
-    <div id="header">
-        <h1>Welcome to my Page! <br> Under Construction</h1>
-    </div>
-    
-    <hr>
-
-    <div id="nav">
-        <h2>Projects</h2>
-        <hr noshade size=5px>
-        <h5>This Page</h5>
-        <h5>Genetic Life</h5>
-        <h5>Emergent Behavior</h5>
-        <h5>Code Sketches</h5>
-    </div>
-
-    <div id="content">
-    
-    </div>
-
-    </font>
-</body
-</html>
+<canvas id="canvas" width="300" height="300"></canvas>
+<button type="button" value="paused" onclick="pauseToggle()">BUTTON </button>
+<button type="button" onclick="reset()"> RESET </button>
+</body>
