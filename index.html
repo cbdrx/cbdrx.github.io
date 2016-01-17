@@ -5,8 +5,9 @@ var paused = true;
 var theGrid;
 var theInterval;
 
-function consoleDebugGrid(grid)
-{
+//Function iterates through the passed 2D Array and outputs the contents of each
+//cell in the grid, line by line
+function consoleDebugGrid(grid){
   var x,y,toPrint,maxPrint;
   maxPrint = "";
   for(x = 0; x < grid.length; x++)
@@ -21,6 +22,10 @@ function consoleDebugGrid(grid)
   console.log("debugged Grid: \n"+maxPrint);
 }
 
+//Uses the HTML5 Canvas functions to draw a line from the beginning point to the
+//given endpoint. Line will have the default width
+//Parameters: begin and end - arrays of the format [x,y], where the elements are
+// the cartesian coordinates of the start and end pixel
 function drawLineFromTo(begin,end) {
   var context = document.getElementById('canvas').getContext('2d');
   context.beginPath();
@@ -29,6 +34,8 @@ function drawLineFromTo(begin,end) {
   context.stroke();
 }
 
+//Draws a square with side length "width" with its top left corner at (x,y).
+//Colorstring specifies the fill color, which should be a CSS color string
 function drawSquareAt(x,y,width,colorString)
 {
   var context = document.getElementById('canvas').getContext('2d');
@@ -39,12 +46,16 @@ function drawSquareAt(x,y,width,colorString)
   context.stroke();
 }
 
+//Returns true if a cell's value is 0
 function cellEmpty(grid, x, y)
 {
   //console.log(x+","+y);
   return (grid[x][y] == 0);
 }
 
+//Gets the number of non-empty neighbors a cell has without grid wrapping: ie,
+// cell (0,0) has only neighbors (0,1),(1,0), and (1,1)
+// Returns: the integer number of neighbors the cell has
 function getNumberOfNeighborsNoWrap(grid, x, y)
 {
   //consoleDebugGrid(grid);
@@ -250,6 +261,9 @@ function getNumberOfNeighborsNoWrap(grid, x, y)
   return count;
 }
 
+//Gets the number of non-empty neighbors a cell has with grid wrapping: ie,
+// cell (0,0) has its top-left neighbor in the bottom-right of the grid
+// Returns: the integer number of neighbors the cell has
 function getNumberOfNeighborsWithWrap(grid, x, y)
 {
   //consoleDebugGrid(grid);
@@ -583,6 +597,9 @@ function getNumberOfNeighborsWithWrap(grid, x, y)
   return count;
 }
 
+//Returns 0 if a cell should die, or 1 if a cell should live or come to life in
+//accordance with the rules of Conway's Game of life:
+//For more reading - https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 function GOLRule(grid, x, y)
 {
   var neighbors = getNumberOfNeighborsWithWrap(grid,x,y);
@@ -611,6 +628,10 @@ function GOLRule(grid, x, y)
   throw "GOL RULE FAILED";
 }
 
+//Applies the given rule to each cell of the grid and returns the next iteration
+//of the grid.
+//Parameters: grid- a rectangular 2D array
+//            rule - a function of 3 parameters, a grid, and x and y (integers)
 function evolve(grid, rule)
 {
   var i,x,y,tempGrid;
@@ -638,6 +659,7 @@ function evolve(grid, rule)
   return tempGrid;
 }
 
+//Initializes the grid to its initial configuration, and pauses the game
 function init() {
 
     paused = true;
@@ -655,45 +677,39 @@ function init() {
 
 
 }
-
+//Renders the currently-stored grid
 function draw() {
   var grid = theGrid;
-  if(!paused)
+  var x,y;
+  //draw the filled in cells
+  for(x = 0; x < 10; x++)
   {
-    console.log("unpaused");
-    var x,y;
-    //draw the filled in cells
-    for(x = 0; x < 10; x++)
+    for(y = 0; y < 10; y++)
     {
-      for(y = 0; y < 10; y++)
+      if(grid[x][y] != 0)
       {
-        if(grid[x][y] != 0)
-        {
-          drawSquareAt(x*cellWidth,y*cellWidth,cellWidth,'blue');
-        }
-        else
-        {
-          drawSquareAt(x*cellWidth,y*cellWidth,cellWidth,'white');
-        }
+        drawSquareAt(x*cellWidth,y*cellWidth,cellWidth,'blue');
+      }
+      else
+      {
+        drawSquareAt(x*cellWidth,y*cellWidth,cellWidth,'white');
       }
     }
-    //Draw gridlines
-    for(x = 0; x <= 10 * cellWidth; x += cellWidth)
-    {
-      drawLineFromTo([x,0],[x,300]);
-    }
-    for(y = 0; y <= 10 * cellWidth; y += cellWidth)
-    {
-      drawLineFromTo([0,y],[300,y]);
-    }
-
-    theGrid = evolve(grid, GOLRule);
-    consoleDebugGrid(theGrid);
-
+  }
+  //Draw gridlines
+  for(x = 0; x <= 10 * cellWidth; x += cellWidth)
+  {
+    drawLineFromTo([x,0],[x,300]);
+  }
+  for(y = 0; y <= 10 * cellWidth; y += cellWidth)
+  {
+    drawLineFromTo([0,y],[300,y]);
   }
 
 }
 
+//Click Handler for the Play / Pause button. Starts a 100 ms interval for
+// drawing the grid and evolving it
 function pauseToggle()
 {
   if(paused)
@@ -703,20 +719,23 @@ function pauseToggle()
     theInterval = window.setInterval(function()
     {
       window.requestAnimationFrame(draw);
+      theGrid = evolve(theGrid, GOLRule);
     },100);
   }
   else {
+      window.clearInterval(theInterval);
       console.log("Pausing");
       paused = true;
-
       window.clearInterval(theInterval);
   }
 }
 
+//Reinitializes the grid to its original state and redraws
 function reset()
 {
   window.clearInterval(theInterval);
   init();
+  window.requestAnimationFrame(draw);
 }
 
 init();
