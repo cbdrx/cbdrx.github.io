@@ -1,5 +1,5 @@
 <script>
-var cellWidth = 30;
+var cellWidth;
 var numCells = 10;
 var paused = true;
 var theGrid;
@@ -661,19 +661,18 @@ function evolve(grid, rule)
 
 //Initializes the grid to its initial configuration, and pauses the game
 function init() {
-
-    paused = true;
-
-    theGrid =    [[0,1,0,0,0,0,0,0,0,0],
-                  [0,0,1,0,0,0,0,0,0,0],
-                  [1,1,1,0,0,0,0,0,0,0],
-                  [0,0,0,0,0,0,0,0,0,0],
-                  [0,0,0,0,1,0,0,0,0,0],
-                  [0,0,0,0,1,0,0,0,0,0],
-                  [0,0,0,0,1,0,0,0,0,0],
-                  [0,0,0,0,0,0,0,1,1,0],
-                  [0,0,0,0,0,0,0,1,0,1],
-                  [0,0,0,0,0,0,0,1,0,0]];
+  var i,j;
+  paused = true;
+  cellWidth = Math.floor(300 / numCells);
+  theGrid =    new Array(numCells);
+  for(i = 0; i < numCells; i++)
+  {
+    theGrid[i] = new Array(numCells);
+    for(j = 0; j < numCells; j++)
+    {
+      theGrid[i][j] = Math.floor((Math.random()*2));
+    }
+  }
 
 
 }
@@ -682,9 +681,9 @@ function draw() {
   var grid = theGrid;
   var x,y;
   //draw the filled in cells
-  for(x = 0; x < 10; x++)
+  for(x = 0; x < numCells; x++)
   {
-    for(y = 0; y < 10; y++)
+    for(y = 0; y < numCells; y++)
     {
       if(grid[x][y] != 0)
       {
@@ -697,11 +696,11 @@ function draw() {
     }
   }
   //Draw gridlines
-  for(x = 0; x <= 10 * cellWidth; x += cellWidth)
+  for(x = 0; x <= numCells * cellWidth; x += cellWidth)
   {
     drawLineFromTo([x,0],[x,300]);
   }
-  for(y = 0; y <= 10 * cellWidth; y += cellWidth)
+  for(y = 0; y <= numCells * cellWidth; y += cellWidth)
   {
     drawLineFromTo([0,y],[300,y]);
   }
