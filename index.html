@@ -6,7 +6,7 @@ var elementWidth = 600;
 var theGrid;
 var theInterval;
 var GOLColors = ['white','blue'];
-var ForestFireColors = ['#006600','#00CC00','#FF9900'];
+var ForestFireColors = ['#006600','#441100','#00CC00','#FF9900'];
 var currentRule = GOLWithWrapRule;
 var currentRuleColors = GOLColors;
 var currentGenerator = GOLGridGenerator;
@@ -663,46 +663,44 @@ function GOLNoWrapRule(grid, x, y)
 
 function cellIsBurning(grid,x,y)
 {
-  return (grid[x][y] == 2);
+  return (grid[x][y] == 3);
 }
 
 //Empty Cells will be 0, Burnt is 1 Trees will be 2, Burning is 3
 function ForestFireRule(grid,x,y)
 {
-  if(grid[x][y] == 2) //if it's burning, it'll burn out
+  if(grid[x][y] == 3) //if it's burning, it'll burn out
   {
-    return 0;
+    return 1;
   }
-  else if(grid[x][y] == 1)
+  else if(grid[x][y] == 2)
   {
     //if it's a tree and a neighbor is burning, burn
     if(getNumberOfNeighborsNoWrap(grid,x,y,cellIsBurning) > 0)
     {
-      return 2;
+      return 3;
     }
     //a tree may randomly catch fire
     else if(Math.random() > 0.9999)
     {
-      return 2;
+      return 3;
     }
     else
     {
-      return 1;
+      return 2;
     }
   }
-  //A tree may sprout in an empty tile
-  else if(grid[x][y] == 0)
+  //A tree may sprout in a grassy tile
+  else if(grid[x][y] == 0 && Math.random() > 0.99)
   {
-    if(Math.random() > 0.99)
-    {
-      return 1;
-    }
-    else {
-      return grid[x][y];
-    }
+    return 2;
+  }
+  //let grass regrow after some time
+  else if(grid[x][y] == 1 && Math.floor(Math.random()*100) == 0){
+    return 0;
   }
   else {
-    console.log("Condition Unmet");
+    return grid[x][y];
   }
 }
 
@@ -769,10 +767,10 @@ function ForestFireGridGenerator(numCellsWide)
   {
     for(y = 0; y < numCellsWide; y++)
     {
-      grid[x][y] = Math.floor(Math.random()*2);
+      grid[x][y] = Math.floor(Math.random()*3);
       if(Math.random() < 0.005)
       {
-        grid[x][y] = 2;
+        grid[x][y] = 3;
       }
     }
   }
