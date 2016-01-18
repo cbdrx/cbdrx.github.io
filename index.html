@@ -2,7 +2,7 @@
 var cellWidth;
 var numCells = 25;
 var paused = true;
-var elementWidth = 300;
+var elementWidth = 600;
 var theGrid;
 var theInterval;
 var GOLColors = ['white','blue'];
@@ -787,7 +787,7 @@ function init() {
   cellWidth = Math.floor(elementWidth / numCells);
   theGrid = currentGenerator(numCells);
   window.requestAnimationFrame(draw);
-  drawSquareAt(0,0,300,"white");
+  drawSquareAt(0,0,elementWidth,"white");
 
 
 }
@@ -898,14 +898,14 @@ function reset()
   console.log(userValue);
   if( userValue != "")
   {
-    if(userValue < 5)
+    if(userValue < 10)
     {
-      alert("5 is the minimum");
-      numCells = 5;
+      alert("10 is the minimum");
+      numCells = 10;
     }
-    else if (userValue > 100) {
-      alert("100 is the maximum");
-      numCells = 100;
+    else if (userValue > 200) {
+      alert("200 is the maximum");
+      numCells = 200;
     }
     else {
       numCells = userValue;
@@ -923,7 +923,7 @@ init();
 </head>
 <body>
   <h1>2D Cellular Automata</h1>
-  <canvas id="canvas" width="300" height="300"></canvas></br>
+  <canvas id="canvas" width="600" height="600"></canvas></br>
   Number of Cells Wide: <input id = "numCells" type="number" min-"3" /> </br>
   <input type="radio" name="rule" value="0"/> GOL with no Wrap </br>
   <input type="radio" name="rule" value="1" checked="checked"/> GOL with Wrap </br>
