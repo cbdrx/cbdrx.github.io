@@ -1,6 +1,6 @@
 <script>
 var cellWidth;
-var numCells = 10;
+var numCells = 25;
 var paused = true;
 var theGrid;
 var theInterval;
@@ -43,7 +43,6 @@ function drawSquareAt(x,y,width,colorString)
   context.rect(x,y,width,width);
   context.fillStyle = colorString;
   context.fill();
-  context.stroke();
 }
 
 //Returns true if a cell's value is 0
@@ -662,6 +661,7 @@ function evolve(grid, rule)
 //Initializes the grid to its initial configuration, and pauses the game
 function init() {
   var i,j;
+  numCells = Math.floor(numCells);
   paused = true;
   cellWidth = Math.floor(300 / numCells);
   theGrid =    new Array(numCells);
@@ -673,6 +673,8 @@ function init() {
       theGrid[i][j] = Math.floor((Math.random()*2));
     }
   }
+  window.requestAnimationFrame(draw);
+  drawSquareAt(0,0,300,"white");
 
 
 }
@@ -698,11 +700,11 @@ function draw() {
   //Draw gridlines
   for(x = 0; x <= numCells * cellWidth; x += cellWidth)
   {
-    drawLineFromTo([x,0],[x,300]);
+    drawLineFromTo([x,0],[x,numCells * cellWidth]);
   }
   for(y = 0; y <= numCells * cellWidth; y += cellWidth)
   {
-    drawLineFromTo([0,y],[300,y]);
+    drawLineFromTo([0,y],[numCells * cellWidth,y]);
   }
 
 }
@@ -733,6 +735,23 @@ function pauseToggle()
 function reset()
 {
   window.clearInterval(theInterval);
+  var userValue = document.getElementById("numCells").value;
+  console.log(userValue);
+  if( userValue != "")
+  {
+    if(userValue < 5)
+    {
+      alert("5 is the minimum");
+      numCells = 5;
+    }
+    else if (userValue > 100) {
+      alert("100 is the maximum");
+      numCells = 100;
+    }
+    else {
+      numCells = userValue;
+    }
+  }
   init();
   window.requestAnimationFrame(draw);
 }
@@ -745,8 +764,9 @@ init();
 <body>
   <h1>2D Cellular Automata</h1>
   <canvas id="canvas" width="300" height="300"></canvas></br>
+  Number of Cells Wide: <input id = "numCells" type="number" min-"3" /> </br>
 <button type="button" value="paused" onclick="pauseToggle()">PLAY / PAUSE</button>
-<button type="button" onclick="reset()"> RESET </button></br><hr>
+<button type="button" onclick="reset()"> NEW GRID </button></br><hr>
   <p>
     This simple HTML Canvas currently simulates Conway's game of life for a
     random grid. Coming soon are:
