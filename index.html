@@ -9,6 +9,7 @@ var GOLColors = ['white','blue'];
 var ForestFireColors = ['#006600','#00CC00','#FF9900'];
 var currentRule = GOLWithWrapRule;
 var currentRuleColors = GOLColors;
+var currentGenerator = GOLGridGenerator;
 
 //Function iterates through the passed 2D Array and outputs the contents of each
 //cell in the grid, line by line
@@ -680,7 +681,7 @@ function ForestFireRule(grid,x,y)
       return 2;
     }
     //a tree may randomly catch fire
-    else if(Math.random() > 0.99)
+    else if(Math.random() > 0.9999)
     {
       return 2;
     }
@@ -692,7 +693,7 @@ function ForestFireRule(grid,x,y)
   //A tree may sprout in an empty tile
   else if(grid[x][y] == 0)
   {
-    if(Math.random() > 0.90)
+    if(Math.random() > 0.99)
     {
       return 1;
     }
@@ -736,21 +737,55 @@ function evolve(grid, rule)
   return tempGrid;
 }
 
+function basicGridInitializer(numCellsWide)
+{
+  var grid =    new Array(numCells);
+  for(i = 0; i < numCells; i++)
+  {
+    grid[i] = new Array(numCells);
+  }
+  return grid;
+}
+
+function GOLGridGenerator(numCellsWide)
+{
+  var x, y, grid;
+  grid = basicGridInitializer(numCellsWide);
+  for(x = 0; x < numCellsWide; x++)
+  {
+    for(y = 0; y < numCellsWide; y++)
+    {
+      grid[x][y] = Math.floor(Math.random()*2);
+    }
+  }
+  return grid;
+}
+
+function ForestFireGridGenerator(numCellsWide)
+{
+  var x, y, grid;
+  grid = basicGridInitializer(numCellsWide);
+  for(x = 0; x < numCellsWide; x++)
+  {
+    for(y = 0; y < numCellsWide; y++)
+    {
+      grid[x][y] = Math.floor(Math.random()*2);
+      if(Math.random() < 0.005)
+      {
+        grid[x][y] = 2;
+      }
+    }
+  }
+  return grid;
+}
+
 //Initializes the grid to its initial configuration, and pauses the game
 function init() {
   var i,j;
   numCells = Math.floor(numCells);
   paused = true;
   cellWidth = Math.floor(elementWidth / numCells);
-  theGrid =    new Array(numCells);
-  for(i = 0; i < numCells; i++)
-  {
-    theGrid[i] = new Array(numCells);
-    for(j = 0; j < numCells; j++)
-    {
-      theGrid[i][j] = Math.floor((Math.random()*currentRuleColors.length));
-    }
-  }
+  theGrid = currentGenerator(numCells);
   window.requestAnimationFrame(draw);
   drawSquareAt(0,0,300,"white");
 
@@ -806,24 +841,28 @@ function determineRuleAndColors()
     {
       currentRule = GOLNoWrapRule;
       currentRuleColors = GOLColors;
+      currentGenerator = GOLGridGenerator;
       break;
     }
     case "1":
     {
       currentRule = GOLWithWrapRule;
       currentRuleColors = GOLColors;
+      currentGenerator = GOLGridGenerator;
       break;
     }
     case "2":
     {
       currentRule = ForestFireRule;
       currentRuleColors = ForestFireColors;
+      currentGenerator = ForestFireGridGenerator;
       break;
     }
     default:
     {
       currentRule = GOLWithWrapRule;
       currentRuleColors = GOLColors;
+      currentGenerator = GOLGridGenerator;
       break;
     }
   }
