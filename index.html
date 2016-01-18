@@ -2,8 +2,13 @@
 var cellWidth;
 var numCells = 25;
 var paused = true;
+var elementWidth = 300;
 var theGrid;
 var theInterval;
+var GOLColors = ['white','blue'];
+var ForestFireColors = ['#006600','#00CC00','#FF9900'];
+var currentRule = GOLWithWrapRule;
+var currentRuleColors = GOLColors;
 
 //Function iterates through the passed 2D Array and outputs the contents of each
 //cell in the grid, line by line
@@ -46,16 +51,16 @@ function drawSquareAt(x,y,width,colorString)
 }
 
 //Returns true if a cell's value is 0
-function cellEmpty(grid, x, y)
+function cellNotEmpty(grid, x, y)
 {
   //console.log(x+","+y);
-  return (grid[x][y] == 0);
+  return (grid[x][y] != 0);
 }
 
 //Gets the number of non-empty neighbors a cell has without grid wrapping: ie,
 // cell (0,0) has only neighbors (0,1),(1,0), and (1,1)
 // Returns: the integer number of neighbors the cell has
-function getNumberOfNeighborsNoWrap(grid, x, y)
+function getNumberOfNeighborsNoWrap(grid, x, y, countIfFunction)
 {
   //consoleDebugGrid(grid);
   var i, count;
@@ -63,187 +68,187 @@ function getNumberOfNeighborsNoWrap(grid, x, y)
   //try {
     if(x > 0 && x < grid.length - 1 && y > 0 && y < grid[0].length - 1)
     {
-      if(!cellEmpty(grid,x-1,y-1))
+      if(countIfFunction(grid,x-1,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x-1,y))
+      if(countIfFunction(grid,x-1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x-1,y+1))
+      if(countIfFunction(grid,x-1,y+1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,y-1))
+      if(countIfFunction(grid,x,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,y+1))
+      if(countIfFunction(grid,x,y+1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y-1))
+      if(countIfFunction(grid,x+1,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y))
+      if(countIfFunction(grid,x+1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y+1))
+      if(countIfFunction(grid,x+1,y+1))
       {
         count++;
       }
     }
     else if(x == 0 && y == 0)
     {
-      if(!cellEmpty(grid,x,y+1))
+      if(countIfFunction(grid,x,y+1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y))
+      if(countIfFunction(grid,x+1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y+1))
+      if(countIfFunction(grid,x+1,y+1))
       {
         count++;
       }
     }
     else if(x == 0 && y == grid.length-1)
     {
-      if(!cellEmpty(grid,x,y-1))
+      if(countIfFunction(grid,x,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y-1))
+      if(countIfFunction(grid,x+1,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y))
+      if(countIfFunction(grid,x+1,y))
       {
         count++;
       }
     }
     else if(x == grid.length-1 && y == 0)
     {
-      if(!cellEmpty(grid,x-1,y))
+      if(countIfFunction(grid,x-1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x-1,y+1))
+      if(countIfFunction(grid,x-1,y+1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,y+1))
+      if(countIfFunction(grid,x,y+1))
       {
         count++;
       }
     }
     else if(x == grid.length-1 && y == grid.length-1)
     {
-      if(!cellEmpty(grid,x-1,y-1))
+      if(countIfFunction(grid,x-1,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x-1,y))
+      if(countIfFunction(grid,x-1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,y-1))
+      if(countIfFunction(grid,x,y-1))
       {
         count++;
       }
     }
     else if(x == 0)
     {
-      if(!cellEmpty(grid,x,y-1))
+      if(countIfFunction(grid,x,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,y+1))
+      if(countIfFunction(grid,x,y+1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y-1))
+      if(countIfFunction(grid,x+1,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y))
+      if(countIfFunction(grid,x+1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y+1))
+      if(countIfFunction(grid,x+1,y+1))
       {
         count++;
       }
     }
     else if(y == 0)
     {
-      if(!cellEmpty(grid,x-1,y))
+      if(countIfFunction(grid,x-1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x-1,y+1))
+      if(countIfFunction(grid,x-1,y+1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,y+1))
+      if(countIfFunction(grid,x,y+1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y))
+      if(countIfFunction(grid,x+1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y+1))
+      if(countIfFunction(grid,x+1,y+1))
       {
         count++;
       }
     }
     else if(x == grid.length-1)
     {
-      if(!cellEmpty(grid,x-1,y-1))
+      if(countIfFunction(grid,x-1,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x-1,y))
+      if(countIfFunction(grid,x-1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x-1,y+1))
+      if(countIfFunction(grid,x-1,y+1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,y-1))
+      if(countIfFunction(grid,x,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,y+1))
+      if(countIfFunction(grid,x,y+1))
       {
         count++;
       }
     }
     else if(y == grid.length-1)
     {
-      if(!cellEmpty(grid,x-1,y-1))
+      if(countIfFunction(grid,x-1,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x-1,y))
+      if(countIfFunction(grid,x-1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,y-1))
+      if(countIfFunction(grid,x,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y-1))
+      if(countIfFunction(grid,x+1,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y))
+      if(countIfFunction(grid,x+1,y))
       {
         count++;
       }
@@ -263,7 +268,7 @@ function getNumberOfNeighborsNoWrap(grid, x, y)
 //Gets the number of non-empty neighbors a cell has with grid wrapping: ie,
 // cell (0,0) has its top-left neighbor in the bottom-right of the grid
 // Returns: the integer number of neighbors the cell has
-function getNumberOfNeighborsWithWrap(grid, x, y)
+function getNumberOfNeighborsWithWrap(grid, x, y, countIfFunction)
 {
   //consoleDebugGrid(grid);
   var i, count;
@@ -271,315 +276,315 @@ function getNumberOfNeighborsWithWrap(grid, x, y)
   //try {
     if(x > 0 && x < grid.length - 1 && y > 0 && y < grid[0].length - 1)
     {
-      if(!cellEmpty(grid,x-1,y-1))
+      if(countIfFunction(grid,x-1,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x-1,y))
+      if(countIfFunction(grid,x-1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x-1,y+1))
+      if(countIfFunction(grid,x-1,y+1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,y-1))
+      if(countIfFunction(grid,x,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,y+1))
+      if(countIfFunction(grid,x,y+1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y-1))
+      if(countIfFunction(grid,x+1,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y))
+      if(countIfFunction(grid,x+1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y+1))
+      if(countIfFunction(grid,x+1,y+1))
       {
         count++;
       }
     }
     else if(x == 0 && y == 0)
     {
-      if(!cellEmpty(grid,grid.length-1,grid[0].length-1))
+      if(countIfFunction(grid,grid.length-1,grid[0].length-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,grid.length-1,y))
+      if(countIfFunction(grid,grid.length-1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,grid.length-1,y+1))
+      if(countIfFunction(grid,grid.length-1,y+1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,grid[0].length-1))
+      if(countIfFunction(grid,x,grid[0].length-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,y+1))
+      if(countIfFunction(grid,x,y+1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,grid[0].length-1))
+      if(countIfFunction(grid,x+1,grid[0].length-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y))
+      if(countIfFunction(grid,x+1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y+1))
+      if(countIfFunction(grid,x+1,y+1))
       {
         count++;
       }
     }
     else if(x == 0 && y == grid.length-1)
     {
-      if(!cellEmpty(grid,grid.length-1,y-1))
+      if(countIfFunction(grid,grid.length-1,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,grid.length-1,y))
+      if(countIfFunction(grid,grid.length-1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,grid.length-1,0))
+      if(countIfFunction(grid,grid.length-1,0))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,y-1))
+      if(countIfFunction(grid,x,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,0))
+      if(countIfFunction(grid,x,0))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y-1))
+      if(countIfFunction(grid,x+1,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y))
+      if(countIfFunction(grid,x+1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,0))
+      if(countIfFunction(grid,x+1,0))
       {
         count++;
       }
     }
     else if(x == grid.length-1 && y == 0)
     {
-      if(!cellEmpty(grid,x-1,grid[0].length-1))
+      if(countIfFunction(grid,x-1,grid[0].length-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x-1,y))
+      if(countIfFunction(grid,x-1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x-1,y+1))
+      if(countIfFunction(grid,x-1,y+1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,grid[0].length-1))
+      if(countIfFunction(grid,x,grid[0].length-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,y+1))
+      if(countIfFunction(grid,x,y+1))
       {
         count++;
       }
-      if(!cellEmpty(grid,0,grid[0].length-1))
+      if(countIfFunction(grid,0,grid[0].length-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,0,y))
+      if(countIfFunction(grid,0,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,0,y+1))
+      if(countIfFunction(grid,0,y+1))
       {
         count++;
       }
     }
     else if(x == grid.length-1 && y == grid.length-1)
     {
-      if(!cellEmpty(grid,x-1,y-1))
+      if(countIfFunction(grid,x-1,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x-1,y))
+      if(countIfFunction(grid,x-1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x-1,0))
+      if(countIfFunction(grid,x-1,0))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,y-1))
+      if(countIfFunction(grid,x,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,0))
+      if(countIfFunction(grid,x,0))
       {
         count++;
       }
-      if(!cellEmpty(grid,0,y-1))
+      if(countIfFunction(grid,0,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,0,y))
+      if(countIfFunction(grid,0,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,0,0))
+      if(countIfFunction(grid,0,0))
       {
         count++;
       }
     }
     else if(x == 0)
     {
-      if(!cellEmpty(grid,grid.length-1,y-1))
+      if(countIfFunction(grid,grid.length-1,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,grid.length-1,y))
+      if(countIfFunction(grid,grid.length-1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,grid.length-1,y+1))
+      if(countIfFunction(grid,grid.length-1,y+1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,y-1))
+      if(countIfFunction(grid,x,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,y+1))
+      if(countIfFunction(grid,x,y+1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y-1))
+      if(countIfFunction(grid,x+1,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y))
+      if(countIfFunction(grid,x+1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y+1))
+      if(countIfFunction(grid,x+1,y+1))
       {
         count++;
       }
     }
     else if(y == 0)
     {
-      if(!cellEmpty(grid,x-1,grid[0].length-1))
+      if(countIfFunction(grid,x-1,grid[0].length-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x-1,y))
+      if(countIfFunction(grid,x-1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x-1,y+1))
+      if(countIfFunction(grid,x-1,y+1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,grid[0].length-1))
+      if(countIfFunction(grid,x,grid[0].length-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,y+1))
+      if(countIfFunction(grid,x,y+1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,grid[0].length-1))
+      if(countIfFunction(grid,x+1,grid[0].length-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y))
+      if(countIfFunction(grid,x+1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y+1))
+      if(countIfFunction(grid,x+1,y+1))
       {
         count++;
       }
     }
     else if(x == grid.length-1)
     {
-      if(!cellEmpty(grid,x-1,y-1))
+      if(countIfFunction(grid,x-1,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x-1,y))
+      if(countIfFunction(grid,x-1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x-1,y+1))
+      if(countIfFunction(grid,x-1,y+1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,y-1))
+      if(countIfFunction(grid,x,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,y+1))
+      if(countIfFunction(grid,x,y+1))
       {
         count++;
       }
-      if(!cellEmpty(grid,0,y-1))
+      if(countIfFunction(grid,0,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,0,y))
+      if(countIfFunction(grid,0,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,0,y+1))
+      if(countIfFunction(grid,0,y+1))
       {
         count++;
       }
     }
     else if(y == grid.length-1)
     {
-      if(!cellEmpty(grid,x-1,y-1))
+      if(countIfFunction(grid,x-1,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x-1,y))
+      if(countIfFunction(grid,x-1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x-1,0))
+      if(countIfFunction(grid,x-1,0))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,y-1))
+      if(countIfFunction(grid,x,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x,0))
+      if(countIfFunction(grid,x,0))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y-1))
+      if(countIfFunction(grid,x+1,y-1))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,y))
+      if(countIfFunction(grid,x+1,y))
       {
         count++;
       }
-      if(!cellEmpty(grid,x+1,0))
+      if(countIfFunction(grid,x+1,0))
       {
         count++;
       }
@@ -599,9 +604,9 @@ function getNumberOfNeighborsWithWrap(grid, x, y)
 //Returns 0 if a cell should die, or 1 if a cell should live or come to life in
 //accordance with the rules of Conway's Game of life:
 //For more reading - https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
-function GOLRule(grid, x, y)
+function GOLWithWrapRule(grid, x, y)
 {
-  var neighbors = getNumberOfNeighborsWithWrap(grid,x,y);
+  var neighbors = getNumberOfNeighborsWithWrap(grid,x,y, cellNotEmpty);
   //console.log("grid["+x+"]["+y+"] numNeighbors= "+ neighbors);
   switch(neighbors)
   {
@@ -610,7 +615,7 @@ function GOLRule(grid, x, y)
       return 0;
       break;
     case 2:
-      if(cellEmpty(grid, x, y)) return 0;
+      if(!cellNotEmpty(grid, x, y)) return 0;
     case 3:
       return 1;
       break;
@@ -625,6 +630,79 @@ function GOLRule(grid, x, y)
       break;
   }
   throw "GOL RULE FAILED";
+}
+
+function GOLNoWrapRule(grid, x, y)
+{
+  var neighbors = getNumberOfNeighborsNoWrap(grid,x,y, cellNotEmpty);
+  //console.log("grid["+x+"]["+y+"] numNeighbors= "+ neighbors);
+  switch(neighbors)
+  {
+    case 0:
+    case 1:
+      return 0;
+      break;
+    case 2:
+      if(!cellNotEmpty(grid, x, y)) return 0;
+    case 3:
+      return 1;
+      break;
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+      return 0;
+      break;
+    default:
+      break;
+  }
+  throw "GOL RULE FAILED";
+}
+
+function cellIsBurning(grid,x,y)
+{
+  return (grid[x][y] == 2);
+}
+
+//Empty Cells will be 0, Burnt is 1 Trees will be 2, Burning is 3
+function ForestFireRule(grid,x,y)
+{
+  if(grid[x][y] == 2) //if it's burning, it'll burn out
+  {
+    return 0;
+  }
+  else if(grid[x][y] == 1)
+  {
+    //if it's a tree and a neighbor is burning, burn
+    if(getNumberOfNeighborsNoWrap(grid,x,y,cellIsBurning) > 0)
+    {
+      return 2;
+    }
+    //a tree may randomly catch fire
+    else if(Math.random() > 0.99)
+    {
+      return 2;
+    }
+    else
+    {
+      return 1;
+    }
+  }
+  //A tree may sprout in an empty tile
+  else if(grid[x][y] == 0)
+  {
+    if(Math.random() > 0.90)
+    {
+      return 1;
+    }
+    else {
+      return grid[x][y];
+    }
+  }
+  else {
+    console.log("Condition Unmet");
+  }
 }
 
 //Applies the given rule to each cell of the grid and returns the next iteration
@@ -663,14 +741,14 @@ function init() {
   var i,j;
   numCells = Math.floor(numCells);
   paused = true;
-  cellWidth = Math.floor(300 / numCells);
+  cellWidth = Math.floor(elementWidth / numCells);
   theGrid =    new Array(numCells);
   for(i = 0; i < numCells; i++)
   {
     theGrid[i] = new Array(numCells);
     for(j = 0; j < numCells; j++)
     {
-      theGrid[i][j] = Math.floor((Math.random()*2));
+      theGrid[i][j] = Math.floor((Math.random()*currentRuleColors.length));
     }
   }
   window.requestAnimationFrame(draw);
@@ -678,6 +756,12 @@ function init() {
 
 
 }
+
+function drawCell(grid,x,y,cellWidth,colorsArray)
+{
+  drawSquareAt(x*cellWidth,y*cellWidth,cellWidth,colorsArray[grid[x][y]]);
+}
+
 //Renders the currently-stored grid
 function draw() {
   var grid = theGrid;
@@ -687,14 +771,7 @@ function draw() {
   {
     for(y = 0; y < numCells; y++)
     {
-      if(grid[x][y] != 0)
-      {
-        drawSquareAt(x*cellWidth,y*cellWidth,cellWidth,'blue');
-      }
-      else
-      {
-        drawSquareAt(x*cellWidth,y*cellWidth,cellWidth,'white');
-      }
+      drawCell(grid,x,y,cellWidth,currentRuleColors);
     }
   }
   //Draw gridlines
@@ -709,6 +786,49 @@ function draw() {
 
 }
 
+function determineRuleAndColors()
+{
+  var allRules = document.getElementsByName("rule");
+  var i;
+  var selected;
+  for(i = 0; i < allRules.length; i++)
+  {
+    if(allRules[i].checked)
+    {
+      selected = allRules[i].value;
+      break;
+    }
+  }
+  console.log(selected + " was selected");
+  switch(selected)
+  {
+    case "0":
+    {
+      currentRule = GOLNoWrapRule;
+      currentRuleColors = GOLColors;
+      break;
+    }
+    case "1":
+    {
+      currentRule = GOLWithWrapRule;
+      currentRuleColors = GOLColors;
+      break;
+    }
+    case "2":
+    {
+      currentRule = ForestFireRule;
+      currentRuleColors = ForestFireColors;
+      break;
+    }
+    default:
+    {
+      currentRule = GOLWithWrapRule;
+      currentRuleColors = GOLColors;
+      break;
+    }
+  }
+}
+
 //Click Handler for the Play / Pause button. Starts a 100 ms interval for
 // drawing the grid and evolving it
 function pauseToggle()
@@ -720,7 +840,7 @@ function pauseToggle()
     theInterval = window.setInterval(function()
     {
       window.requestAnimationFrame(draw);
-      theGrid = evolve(theGrid, GOLRule);
+      theGrid = evolve(theGrid, currentRule);
     },100);
   }
   else {
@@ -752,6 +872,7 @@ function reset()
       numCells = userValue;
     }
   }
+  determineRuleAndColors();
   init();
   window.requestAnimationFrame(draw);
 }
@@ -765,6 +886,9 @@ init();
   <h1>2D Cellular Automata</h1>
   <canvas id="canvas" width="300" height="300"></canvas></br>
   Number of Cells Wide: <input id = "numCells" type="number" min-"3" /> </br>
+  <input type="radio" name="rule" value="0"/> GOL with no Wrap </br>
+  <input type="radio" name="rule" value="1" checked="checked"/> GOL with Wrap </br>
+  <input type="radio" name="rule" value="2"/> Forest Fire </br>
 <button type="button" value="paused" onclick="pauseToggle()">PLAY / PAUSE</button>
 <button type="button" onclick="reset()"> NEW GRID </button></br><hr>
   <p>
