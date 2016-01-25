@@ -11,6 +11,9 @@ var WorldGenColors = ['#C9C165','#0000FF','#00CC00','#FF9900', '#00FFFF'];
 var currentRule = mapGenRule;
 var currentRuleColors = WorldGenColors;
 var currentGenerator = MapGenGridGenerator;
+var stepToDrawAt = 1;
+var timePerFrame = 100;
+var generationsElapsed = 0;
 
 //Function iterates through the passed 2D Array and outputs the contents of each
 //cell in the grid, line by line
@@ -980,9 +983,15 @@ function pauseToggle()
     paused = false;
     theInterval = window.setInterval(function()
     {
+      var i = 0;
+      while(i < stepToDrawAt)
+      {
+        theGrid = evolve(theGrid, currentRule);
+        i++
+      }
+      i = 0;
       window.requestAnimationFrame(draw);
-      theGrid = evolve(theGrid, currentRule);
-    },100);
+    },timePerFrame);
   }
   else {
       window.clearInterval(theInterval);
@@ -992,10 +1001,8 @@ function pauseToggle()
   }
 }
 
-//Reinitializes the grid to its original state and redraws
-function reset()
+function getNumberOfCellsWide()
 {
-  window.clearInterval(theInterval);
   var userValue = document.getElementById("numCells").value;
   console.log(userValue);
   if( userValue != "")
@@ -1013,6 +1020,49 @@ function reset()
       numCells = userValue;
     }
   }
+}
+
+function getTimeStep()
+{
+  var userValue = document.getElementById("stepToDrawAt").value;
+  //console.log(userValue);
+  if( userValue != "")
+  {
+    if(userValue < 1)
+    {
+      alert("1 is the minimum generations per frame");
+      stepToDrawAt = 1;
+    }
+    else {
+      stepToDrawAt = userValue;
+    }
+  }
+}
+
+function getTimeBetween()
+{
+  var userValue = document.getElementById("msPerFrame").value;
+  //console.log(userValue);
+  if( userValue != "")
+  {
+    if(userValue < 50)
+    {
+      alert("1 is the minimum ms per frame");
+      timePerFrame = 50;
+    }
+    else {
+      timePerFrame = userValue;
+    }
+  }
+}
+
+//Reinitializes the grid to its original state and redraws
+function reset()
+{
+  window.clearInterval(theInterval);
+  getNumberOfCellsWide();
+  getTimeStep();
+  getTimeBetween();
   determineRuleAndColors();
   init();
   window.requestAnimationFrame(draw);
@@ -1027,6 +1077,8 @@ init();
   <h1>2D Cellular Automata</h1>
   <canvas id="canvas" width="600" height="600"></canvas></br>
   Number of Cells Wide: <input id = "numCells" type="number" min-"3" /> </br>
+  Draw Every <input id = "stepToDrawAt" type="number" min-"1" /> Generations </br>
+  Draw Every <input id = "msPerFrame" type="number" min-"50" /> ms </br>
   <input type="radio" name="rule" value="0"/> GOL with no Wrap </br>
   <input type="radio" name="rule" value="1"/> GOL with Wrap </br>
   <input type="radio" name="rule" value="2"/> Forest Fire </br>
