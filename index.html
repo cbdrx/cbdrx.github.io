@@ -1,6 +1,6 @@
 <script>
 var cellWidth;
-var numCells = 25;
+var numCells = 50;
 var paused = true;
 var elementWidth = 600;
 var theGrid;
@@ -8,9 +8,9 @@ var theInterval;
 var GOLColors = ['white','blue'];
 var ForestFireColors = ['#006600','#441100','#00CC00','#FF9900'];
 var WorldGenColors = ['#C9C165','#0000FF','#00CC00','#FF9900', '#00FFFF'];
-var currentRule = GOLWithWrapRule;
-var currentRuleColors = GOLColors;
-var currentGenerator = GOLGridGenerator;
+var currentRule = mapGenRule;
+var currentRuleColors = WorldGenColors;
+var currentGenerator = MapGenGridGenerator;
 
 //Function iterates through the passed 2D Array and outputs the contents of each
 //cell in the grid, line by line
@@ -1028,9 +1028,9 @@ init();
   <canvas id="canvas" width="600" height="600"></canvas></br>
   Number of Cells Wide: <input id = "numCells" type="number" min-"3" /> </br>
   <input type="radio" name="rule" value="0"/> GOL with no Wrap </br>
-  <input type="radio" name="rule" value="1" checked="checked"/> GOL with Wrap </br>
+  <input type="radio" name="rule" value="1"/> GOL with Wrap </br>
   <input type="radio" name="rule" value="2"/> Forest Fire </br>
-  <input type="radio" name="rule" value="3"/> Map Generator </br>
+  <input type="radio" name="rule" value="3" checked="checked"/> Map Generator </br>
 <button type="button" value="paused" onclick="pauseToggle()">PLAY / PAUSE</button>
 <button type="button" onclick="reset()"> NEW GRID </button></br><hr>
   <p>
