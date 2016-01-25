@@ -7,6 +7,7 @@ var theGrid;
 var theInterval;
 var GOLColors = ['white','blue'];
 var ForestFireColors = ['#006600','#441100','#00CC00','#FF9900'];
+var WorldGenColors = ['#C9C165','#0000FF','#00CC00','#FF9900', '#00FFFF'];
 var currentRule = GOLWithWrapRule;
 var currentRuleColors = GOLColors;
 var currentGenerator = GOLGridGenerator;
@@ -666,6 +667,14 @@ function cellIsBurning(grid,x,y)
   return (grid[x][y] == 3);
 }
 
+function checkForType(type)
+{
+  return function(grid,x,y)
+  {
+    return (grid[x][y] == type);
+  };
+}
+
 //Empty Cells will be 0, Burnt is 1 Trees will be 2, Burning is 3
 function ForestFireRule(grid,x,y)
 {
@@ -676,7 +685,7 @@ function ForestFireRule(grid,x,y)
   else if(grid[x][y] == 2)
   {
     //if it's a tree and a neighbor is burning, burn
-    if(getNumberOfNeighborsNoWrap(grid,x,y,cellIsBurning) > 0)
+    if(getNumberOfNeighborsNoWrap(grid,x,y,checkForType(3)) > 0)
     {
       return 3;
     }
@@ -701,6 +710,85 @@ function ForestFireRule(grid,x,y)
   }
   else {
     return grid[x][y];
+  }
+}
+
+function mapGenRule(grid, x, y)
+{
+  if(grid[x][y] == 3) //if it's being dug, it'll be reduced to a mid-level
+  {
+    return 0;
+  }
+  else if(grid[x][y] == 2)
+  {
+    //if it's a hilltop and a neighbor is being dug out, dig at a chance
+    if(getNumberOfNeighborsNoWrap(grid,x,y,checkForType(3)) > 0 && Math.random() > 0.75)
+    {
+        return 3;
+    }
+    //A coastal tile may erode
+    else if(getNumberOfNeighborsNoWrap(grid,x,y,checkForType(1)) > 3 && Math.random() > 0.75)
+    {
+      return 0;
+    }
+    //A hilltop may be arndomly selected for digging
+    else if(Math.random() > 0.9999)
+    {
+      return 3;
+    }
+    //a hilltop may be randomly selected for flooding
+    else if(Math.random() > 0.9999)
+    {
+      return 4;
+    }
+    else
+    {
+      return grid[x][y];
+    }
+  }
+  //a hillside may become a eroded if a neighbor is eroded, or will become a
+  // flood tile if it a neighbor is flooded and surrounded by hill tiles
+  else if(grid[x][y] == 0)
+  {
+    if(getNumberOfNeighborsNoWrap(grid,x,y,checkForType(4)) > 0)
+    {
+      if(Math.random() > 0.50)
+      {
+        return 4;
+      }
+      else {
+        return 1;
+      }
+    }
+    if(getNumberOfNeighborsNoWrap(grid,x,y,checkForType(1)) > 0)
+    {
+      if(Math.random() > 0.85)
+      {
+        return 1;
+      }
+    }
+    else {
+      return 0;
+    }
+  }
+  else if(grid[x][y] == 4)
+  {
+    if(getNumberOfNeighborsNoWrap(grid,x,y,checkForType(2)) > 4)
+    {
+      return 2;
+    }
+    else
+    {
+      return 1;
+    }
+  }
+  else if(grid[x][y] == 1)
+  {
+    return 1;
+  }
+  else
+  {
+      return grid[x][y];
   }
 }
 
@@ -771,6 +859,28 @@ function ForestFireGridGenerator(numCellsWide)
       if(Math.random() < 0.005)
       {
         grid[x][y] = 3;
+      }
+    }
+  }
+  return grid;
+}
+
+function MapGenGridGenerator(numCellsWide)
+{
+  var x, y, grid;
+  grid = basicGridInitializer(numCellsWide);
+  for(x = 0; x < numCellsWide; x++)
+  {
+    for(y = 0; y < numCellsWide; y++)
+    {
+      grid[x][y] = 2
+      if(Math.random() < 0.001)
+      {
+        grid[x][y] = 3;
+      }
+      else if(Math.random() > 0.999)
+      {
+        grid[x][y] = 4;
       }
     }
   }
@@ -851,9 +961,16 @@ function determineRuleAndColors()
     }
     case "2":
     {
-      currentRule = ForestFireRule;
+      currentRule = forestFireRule;
       currentRuleColors = ForestFireColors;
       currentGenerator = ForestFireGridGenerator;
+      break;
+    }
+    case "3":
+    {
+      currentRule = mapGenRule;
+      currentRuleColors = WorldGenColors;
+      currentGenerator = MapGenGridGenerator;
       break;
     }
     default:
@@ -926,6 +1043,7 @@ init();
   <input type="radio" name="rule" value="0"/> GOL with no Wrap </br>
   <input type="radio" name="rule" value="1" checked="checked"/> GOL with Wrap </br>
   <input type="radio" name="rule" value="2"/> Forest Fire </br>
+  <input type="radio" name="rule" value="3"/> Map Generator </br>
 <button type="button" value="paused" onclick="pauseToggle()">PLAY / PAUSE</button>
 <button type="button" onclick="reset()"> NEW GRID </button></br><hr>
   <p>
