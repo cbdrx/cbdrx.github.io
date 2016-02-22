@@ -1095,29 +1095,35 @@ init();
 <head>
   <title>A Developing Journey into Web Development</title>
 </head>
-<body>
-  <h1>2D Cellular Automata</h1>
-  <canvas id="canvas" width="600" height="600"></canvas></br>
-  Number of Cells Wide: <input id = "numCells" type="number" min-"3" /> </br>
-  Draw Every <input id = "stepToDrawAt" type="number" min-"1" /> Generations </br>
-  Draw Every <input id = "msPerFrame" type="number" min-"50" /> ms </br>
-  <input type="radio" name="rule" value="0"/> GOL with no Wrap </br>
-  <input type="radio" name="rule" value="1"/> GOL with Wrap </br>
-  <input type="radio" name="rule" value="2"/> Forest Fire </br>
-  <input type="radio" name="rule" value="3" checked="checked"/> Map Generator </br>
-<button type="button" value="paused" onclick="pauseToggle()">PLAY / PAUSE</button>
-<button type="button" onclick="reset()"> NEW GRID </button></br><hr>
-  <p>
-    This simple HTML Canvas currently simulates Conway's game of life for a
-    random grid. Coming soon are:
-  </p>
-  <ul>
-    <li>User-specified starting patterns</li>
-    <li>Resizability of the grid</li>
-    <li>Support for other 2D Cellular Automata</li>
-    <li>Better page design</li>
-    <li>More content and similar projects</li>
-  </ul>
-</br><hr>
-<h6>Chris Boudreaux, 2016</h6>
+<body style="background-color:#FAF5F5">
+  <div style="width:50%;margin:0 auto;background-color:#FFF; border:solid 1px; border-radius:5px; box-shadow:5px 5px 15px #F0F0F0;">
+  <h1 style="width:50%;margin:0 auto;padding:25 20">2D Cellular Automata</h1>
+  <div style="margin:0 auto">
+    <canvas style="padding-left:17px" id="canvas" width="600" height="600"></canvas></br>
+  </div>
+  <div id="controls">
+    Number of Cells Wide: <input id = "numCells" type="number" min-"3"/> </br>
+    Draw Every <input id = "stepToDrawAt" type="number" min-"1" /> Generations </br>
+    Draw Every <input id = "msPerFrame" type="number" min-"50" /> ms </br>
+    <input type="radio" name="rule" value="0"/> GOL with no Wrap </br>
+    <input type="radio" name="rule" value="1"/> GOL with Wrap </br>
+    <input type="radio" name="rule" value="2"/> Forest Fire </br>
+    <input type="radio" name="rule" value="3" checked="checked"/> Map Generator </br>
+    <button type="button" value="paused" onclick="pauseToggle()">PLAY / PAUSE</button>
+    <button type="button" onclick="reset()"> NEW GRID </button></br><hr>
+  </div>
+    <p>
+      This HTML Canvas Javascript currently simulates Conway's GOL, Forest Fire,
+      and a simple world generator for a randomly initialized grid. Coming soon are :
+    </p>
+    <ul>
+      <li>User-specified starting patterns</li>
+      <li>Responsive resizing of the canvas</li>
+      <li>Support for more 2D Cellular Automata</li>
+      <li>Better page design</li>
+      <li>More content and similar projects</li>
+    </ul>
+  </br><hr>
+  <h6>Chris Boudreaux, 2016</h6>
+  </div>
 </body>
