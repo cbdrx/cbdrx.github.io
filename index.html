@@ -1,37 +1,70 @@
-<script src="cellular.js"></script> 
-<link rel="stylesheet" type="text/css" href="base.css">
+<!DOCTYPE html>
+<html>
 <head>
-  <title>A Developing Journey into Web Development</title>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <title>A Foray into Web Development</title>
 </head>
 <body>
-  <div class="page_content">
-  <h1 style="width:80%;margin:auto;padding:25 20;text-align:center;display:block;">2D Cellular Automata</h1>
-  <div>
-    <canvas id="canvas"></canvas></br>
-  </div>
-  <div id="controls" style="text-align:center">
-    Number of Cells Wide: <input id = "numCells" type="number" min-"3"/> </br>
-    Draw Every <input id = "stepToDrawAt" type="number" min-"1" /> Generations </br>
-    Draw Every <input id = "msPerFrame" type="number" min-"50" /> ms </br>
-    <input type="radio" name="rule" value="0"/> GOL with no Wrap </br>
-    <input type="radio" name="rule" value="1"/> GOL with Wrap </br>
-    <input type="radio" name="rule" value="2"/> Forest Fire </br>
-    <input type="radio" name="rule" value="3" checked="checked"/> Map Generator </br>
-    <button type="button" value="paused" onclick="pauseToggle()">PLAY / PAUSE</button>
-    <button type="button" onclick="reset()"> NEW GRID </button></br><hr>
-  </div>
-    <p>
-      This HTML Canvas Javascript currently simulates Conway's GOL, Forest Fire,
-      and a simple world generator for a randomly initialized grid. Coming soon are :
-    </p>
-    <ul>
-      <li>User-specified starting patterns</li>
-      <li>Responsive resizing of the canvas</li>
-      <li>Support for more 2D Cellular Automata</li>
-      <li>Better page design</li>
-      <li>More content and similar projects</li>
-    </ul>
-  </br><hr>
-  <h6>Chris Boudreaux, 2016</h6>
-  </div>
+    <nav class="navbar-default navbar">
+        <div class="container-fluid">
+            <h1>Projects and Live Demos</h1><br>
+            <ul class="nav nav-tabs nav-justified">
+                <li class="active">
+                    <a href="index.html"><span class="glyphicon glyphicon-user"></span>About Me</a>
+                </li>
+                <li class="disabled">
+                    <a><span class="glyphicon glyphicon-pencil"></span>Projects Overview</a>
+                </li>
+                <li class="">
+                    <a type="button" id="liveDemoDropdown" data-toggle="dropdown" aria-expande="false"><span class="glyphicon glyphicon-console"></span>Live Javascript Demos<span class="glyphicon glyphicon-triangle-bottom"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="cellular.html">Cellular Automata </a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2> About Me </h2>
+                <h4>
+                    Currently, I am working on my Bachelor's Degree in Computer Science at the University of Louisiana at Lafayette.
+                    I have a strong interest in Artificial Intelligence and Human-Computer Interaction. I expect to receive my degree
+                    in May 2017. In the mean time, I am a full-stack ASP.NET developer at <a href="http://lafayette.org/" title="Lafayette Economic Development Authority">LEDA</a>
+                    working on an internal web application for activity logging and contact management.
+                </h4>
+                <br>
+                <h4>
+                    <div class="panel panel-default text-center">
+                        <div class="panel-heading">
+                            <div class="panel-title">Experienced With</div>
+                        </div>
+                        <div class="panel-body">
+                            <ul class="list-group ">
+                                <li class="list-group-item"> C# / .NET </li>
+                                <li class="list-group-item"> C++ </li>
+                                <li class="list-group-item"> SQL </li>
+                                <li class="list-group-item"> Javascript / jQuery </li>
+                                <li class="list-group-item"> HTML and CSS </li>
+                                <li class="list-group-item"> Angular.js </li>
+                                <li class="list-group-item"> Microsoft WebAPI 2 </li>
+                                <li class="list-group-item"> Microsoft MVC 5 </li>
+                                <li class="list-group-item"> Windows</li>
+                                <li class="list-group-item"> Debian Linux and Derivatives </li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </h4>
+                <br>
+                <h4>This website, however spartan, serves as a testing ground for web technologies. Currently, it uses
+                    Twitter Bootstrap 3 and jQuery 1.12.0.
+                </h4>
+            </div>
+        </div>
+    </div>
 </body>
+</html>
