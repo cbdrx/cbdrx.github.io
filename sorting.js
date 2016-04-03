@@ -62,10 +62,10 @@ $(document).ready(function()
        
        theInterval = window.setInterval(function()
         {   
-            console.log("Drawing a frame, " + currentStep);
-            console.log("currentI is " + currentI);
-            console.log("currentJ is " + currentJ);
-            console.log("currentStep is " + currentStep);
+            // console.log("Drawing a frame, " + currentStep);
+            // console.log("currentI is " + currentI);
+            // console.log("currentJ is " + currentJ);
+            // console.log("currentStep is " + currentStep);
             if(currentI >= listToSort.length)
             {
                 console.log("Sorted!");
@@ -77,7 +77,7 @@ $(document).ready(function()
                 if(currentStep == 0)
                 {
                     currentSwap = comparison(currentJ, currentJ+1, "green");
-                    console.log("Swap was needed: "+currentSwap);
+                    // console.log("Swap was needed: "+currentSwap);
                     if(currentSwap)
                     {
                         BubbleSwap(currentJ, currentJ+1, "red");
@@ -100,7 +100,7 @@ $(document).ready(function()
                     window.clearInterval(theInterval);
                     return;
                 }
-                console.log("reached the end of the list?");
+                // console.log("reached the end of the list?");
                 currentJ = 0;
                 iterationSwap = false;
                 currentI++;
@@ -163,10 +163,10 @@ $(document).ready(function()
     //Colorstring specifies the fill color, which should be a CSS color string
     function drawElementAt(x,value,colorString)
     {
-        var spaceBetween = 1;
-        if(elementWidth < 8)
+        var spaceBetween = 0;
+        if(elementWidth > 8)
         {
-            spaceBetween = 0;
+            spaceBetween = 1;
         }
         //console.log("drawing a " + colorString + " " + value + " at " + x);
         var context = document.getElementById('canvas').getContext('2d');
