@@ -7,12 +7,8 @@ $(document).ready(function()
    var listToSort;
    var paused = true;
    var theInterval;
-   var stepToDrawAt;
    var timePerFrame = 10;
    var algToUse;
-   var algComparisonStep;
-   var algSwapStep;
-   var currentStep;
    
    
    var comparison = function(index1, index2, color)
@@ -47,14 +43,14 @@ $(document).ready(function()
         {
             console.log("Unpausing");
             paused = false;
-            BubbleSort();
+            algToUse();
         }
     });
 
    
    function BubbleSort()
    {
-       var currentI, currentJ, currentSwap, iterationSwap, currentStep, refreshTime, compareTime
+       var currentI, currentJ, currentSwap, iterationSwap, currentStep;
        currentI = 0;
        currentJ = 0;
        iterationSwap = false;
@@ -105,6 +101,66 @@ $(document).ready(function()
                 iterationSwap = false;
                 currentI++;
                 currentStep = 0;
+            }
+        },timePerFrame);
+       
+   }   
+   
+   function BubbleSortWithOpt()
+   {
+       var currentI, currentJ, currentSwap, iterationSwap, currentStep, lengthToCheck;
+       currentI = 0;
+       currentJ = 0;
+       iterationSwap = false;
+       currentStep = 0;
+       lengthToCheck = listToSort.length;
+       
+       theInterval = window.setInterval(function()
+        {   
+            console.log("Drawing a frame, " + currentStep);
+            console.log("currentI is " + currentI);
+            console.log("currentJ is " + currentJ);
+            console.log("currentStep is " + currentStep);
+            if(currentI >= listToSort.length)
+            {
+                console.log("Sorted!");
+                window.clearInterval(theInterval);
+                return;   
+            }
+            if(currentJ < lengthToCheck)
+            {
+                if(currentStep == 0)
+                {
+                    currentSwap = comparison(currentJ, currentJ+1, "green");
+                    // console.log("Swap was needed: "+currentSwap);
+                    if(currentSwap)
+                    {
+                        BubbleSwap(currentJ, currentJ+1, "red");
+                        iterationSwap = true;
+                    }
+                    currentStep = 1;
+                }
+                else if(currentStep == 1)
+                {
+                    BubbleNext(currentJ, currentJ+1, "black");
+                    currentStep = 0;             
+                    currentJ++;
+                }
+            }
+            else
+            {
+                if(iterationSwap == false)
+                {
+                    console.log("Sorted!");
+                    window.clearInterval(theInterval);
+                    return;
+                }
+                // console.log("reached the end of the list?");
+                currentJ = 0;
+                iterationSwap = false;
+                currentI++;
+                currentStep = 0;
+                lengthToCheck--;
             }
         },timePerFrame);
        
@@ -187,6 +243,7 @@ $(document).ready(function()
         numElements = Math.floor(numElements);
         paused = true;
         resizeCanvas();
+        determineAlg();
         listToSort = shuffle( createSortedList(numElements) );
         drawSquareAt(0,0,canvas.parent().width(),"white");
         window.requestAnimationFrame(draw);
@@ -262,8 +319,12 @@ $(document).ready(function()
         case "0":
         {
             algToUse = BubbleSort;
-            currentStep = comparison;
             break;
+        }
+        case "1":
+        {
+            algToUse = BubbleSortWithOpt;
+            break;  
         }
         default:
         {
@@ -319,7 +380,6 @@ $(document).ready(function()
         getTimeBetween();
         determineAlg();
         init();
-        window.requestAnimationFrame(draw);
     });
     
     $(window).resize(function()
