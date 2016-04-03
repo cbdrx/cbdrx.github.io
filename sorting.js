@@ -55,8 +55,6 @@ $(document).ready(function()
    function BubbleSort()
    {
        var currentI, currentJ, currentSwap, iterationSwap, currentStep, refreshTime, compareTime
-       refreshTime = timePerFrame;
-       compareTime = 100;
        currentI = 0;
        currentJ = 0;
        iterationSwap = false;
@@ -78,7 +76,6 @@ $(document).ready(function()
             {
                 if(currentStep == 0)
                 {
-                    timePerFrame = compareTime;
                     currentSwap = comparison(currentJ, currentJ+1, "green");
                     console.log("Swap was needed: "+currentSwap);
                     if(currentSwap)
@@ -93,7 +90,6 @@ $(document).ready(function()
                     BubbleNext(currentJ, currentJ+1, "black");
                     currentStep = 0;             
                     currentJ++;
-                    timePerFrame = refreshTime;
                 }
             }
             else
