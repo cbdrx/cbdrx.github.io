@@ -117,10 +117,10 @@ $(document).ready(function()
        
        theInterval = window.setInterval(function()
         {   
-            console.log("Drawing a frame, " + currentStep);
-            console.log("currentI is " + currentI);
-            console.log("currentJ is " + currentJ);
-            console.log("currentStep is " + currentStep);
+            // console.log("Drawing a frame, " + currentStep);
+            // console.log("currentI is " + currentI);
+            // console.log("currentJ is " + currentJ);
+            // console.log("currentStep is " + currentStep);
             if(currentI >= listToSort.length)
             {
                 console.log("Sorted!");
