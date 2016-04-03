@@ -5,7 +5,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-  <script src="cellular.js"></script> 
+  <script src="sorting.js"></script> 
   <title>Cellular Automata</title>
 </head>
 <body>
@@ -30,33 +30,29 @@
         </div>
     </nav>
   <div class="container text-center">
-    <h2>2D Cellular Automata</h2>
+    <h2>Sorting Algorithms, Visualized</h2>
     <div class="row">
         <div class="col-sm-12">
             <canvas id="canvas" width="500"></canvas>
         </div>
     </div>
         <div id="controls">
-            Number of Cells Wide: <input id = "numCells" type="number" min-"3"/> </br>
-            Draw Every <input id = "stepToDrawAt" type="number" min-"1" /> Generations </br>
-            Draw Every <input id = "msPerFrame" type="number" min-"50" /> ms </br>
-            <input type="radio" name="rule" value="0"/> GOL with no Wrap </br>
-            <input type="radio" name="rule" value="1"/> GOL with Wrap </br>
-            <input type="radio" name="rule" value="2"/> Forest Fire </br>
-            <input type="radio" name="rule" value="3" checked="checked"/> Map Generator </br>
+            Number of Elements: <input id = "numElements" type="number" min-"3"/> </br>
+            Draw Every <input id = "msPerFrame" type="number" min-"5" /> ms </br>
+            <input type="radio" name="alg" value="0" checked="checked"/> Bubble Sort </br>
             <button id="playPause" type="button">PLAY / PAUSE</button>
-            <button id="newGrid" type="button"> NEW GRID </button></br><hr>
+            <button id="newSort" type="button"> NEW SORT </button></br><hr>
         </div>
             <p>
-            This HTML Canvas Javascript currently simulates Conway's GOL, Forest Fire,
-            and a simple world generator for a randomly initialized grid. Coming soon are :
+            This HTML Canvas and Javascript shows the steps of the selected sorting algorithm.
+            Green highlights represent comparisons that do not need a swap, while red ones
+            represent comparisons that lead to a swap. Coming Soon:
             </p>
             <ul class="list-group">
-                <li class="list-group-item">User-specified starting patterns<span style="color:firebrick" class="glyphicon glyphicon-minus"></span></li>
-                <li class="list-group-item">Responsive resizing of the canvas<span style="color:green" class="glyphicon glyphicon-ok"></span></li>
-                <li class="list-group-item">Support for more 2D Cellular Automata<span style="color:green" class="glyphicon glyphicon-ok"></span></li>
-                <li class="list-group-item">Better page design<span style="color:gold" class="glyphicon glyphicon-ok"></span></li>
-                <li class="list-group-item">More content and similar projects<span style="color:firebrick" class="glyphicon glyphicon-minus"></span></li>
+                <li class="list-group-item">Cleaner Rendering<span style="color:firebrick" class="glyphicon glyphicon-minus"></span></li>
+                <li class="list-group-item">Merge Sort<span style="color:firebrick" class="glyphicon glyphicon-minus"></span></li>
+                <li class="list-group-item">Bogosort<span style="color:firebrick" class="glyphicon glyphicon-minus"></span></li>
+                <li class="list-group-item">Optimizations<span style="color:firebrick" class="glyphicon glyphicon-minus"></span></li>
             </ul>
         </br><hr>
     <h6>Chris Boudreaux, 2016</h6>
