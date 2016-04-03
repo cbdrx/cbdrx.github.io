@@ -163,15 +163,18 @@ $(document).ready(function()
     //Colorstring specifies the fill color, which should be a CSS color string
     function drawElementAt(x,value,colorString)
     {
-        var spaceBetween = 0;
-        if(elementWidth > 8)
-        {
-            spaceBetween = 1;
-        }
         //console.log("drawing a " + colorString + " " + value + " at " + x);
         var context = document.getElementById('canvas').getContext('2d');
         context.beginPath();
-        context.rect(x * elementWidth ,canvasWidth - value*elementWidth,elementWidth-spaceBetween,value*elementWidth);
+        if(elementWidth > 10)
+        {
+            context.rect(x * elementWidth ,canvasWidth - value*elementWidth,elementWidth-1,value*elementWidth);    
+        }
+        else
+        {
+            context.rect(x * elementWidth ,canvasWidth - value*elementWidth,elementWidth,value*elementWidth);    
+        }
+        
         context.fillStyle = colorString;
         context.fill();
     }
