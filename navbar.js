@@ -2,7 +2,7 @@ function createNavbar(){
     var navbar = 
     '<nav class="navbar-default navbar">' +
         '<div class="container-fluid">' +
-            '<h1>Chris Boudreaux</h1><br>' +
+            '<h1>Projects and Live Demos</h1><br>' +
             '<ul class="nav nav-tabs nav-justified">' +
                 '<li id="AboutMeTab">' +
                     '<a href="index.html"><span class="glyphicon glyphicon-user"></span>About Me</a>' +
