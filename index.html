@@ -5,32 +5,16 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="navbar.js"></script>
   <title>A Foray into Web Development</title>
 </head>
 <body>
-    <nav class="navbar-default navbar">
-        <div class="container-fluid">
-            <h1>Projects and Live Demos</h1><br>
-            <ul class="nav nav-tabs nav-justified">
-                <li class="active">
-                    <a href="index.html"><span class="glyphicon glyphicon-user"></span>About Me</a>
-                </li>
-                <li class="disabled">
-                    <a><span class="glyphicon glyphicon-pencil"></span>Projects Overview</a>
-                </li>
-                <li>
-                    <a type="button" id="liveDemoDropdown" data-toggle="dropdown" aria-expande="false"><span class="glyphicon glyphicon-console"></span>Live Javascript Demos<span class="glyphicon glyphicon-triangle-bottom"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="cellular.html">Cellular Automata </a></li>
-                        <li><a href="sorting.html">Sorting Algorithms </a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="https://github.com/cbdrx/"><span class="glyphicon glyphicon-equalizer" style="transform:rotate(90deg);"></span> Github </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    <div id="NavBarHolder">
+    </div>
+    <script>
+        $('#NavBarHolder').html(createNavbar());
+        setActiveTab("AboutMe");
+    </script>
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
