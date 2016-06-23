@@ -46,6 +46,44 @@ $(document).ready(function()
             algToUse();
         }
     });
+    
+    function Merge(left, right)
+    {
+        var leftSize, rightSize, leftcurrent, rightcurrent, waited;
+        leftSize = left.length;
+        rightSize = right.length;
+        leftcurrent = 0;
+        rightcurrent = 0;
+        while(leftcurrent < leftSize && rightcurrent < rightSize)
+        {
+            waited = false;
+            theInterval = window.setInterval(function()
+            {   
+                if(waited) {window.clearInterval(theInterval);}
+                waited = true;
+            },timePerFrame);
+            
+        }
+        
+        
+    }
+    
+    function MergeSort(list)
+    {
+        var left, right;
+        var splitAt = Math.ceil(((list.length - 1) / 2));
+        
+        if(list.length == 1)
+        {
+            return list;
+        }
+        else
+        {
+            left = MergeSort(list.slice(0,splitAt));
+            right = MergeSort(list.slice(splitAt, list.length));
+            return Merge(left, right);   
+        }
+    }
 
    
    function BubbleSort()
