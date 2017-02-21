@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel='shortcut icon' href='favicon.ico' type='image/x-icon' />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="navbar.js"></script>
+    <title>VRilog</title>
+</head>
+<body>
+    <div id="NavBarHolder">
+    </div>
+    <script>
+        $('#NavBarHolder').html(createNavbar());
+        setActiveTab("Projects");
+    </script>
+    <div class="container">
+        <h2>VRilog</h2>
+        <div class="row">
+            <div class="col-sm-12">
+                <h4>
+                    VRilog is a project that I'm working on for my capstone course at the University of Louisiana at Lafayette.
+                </h4>
+                <h4>
+                    I've been interested in computer hardware for many years, but before I started college, I was often frustrated
+                    by the fact that in order to be a hardware hobbyist, you needed money for components. While a Virtual Reality
+                    headset isn't cheap, I felt that this new platform could be used for a wide array of educational purposes.
+                    Instead of having many types of labs with fragile specialized equipment, schools of the future may be able to
+                    consolidate costs and invest in VR labs.
+                </h4>
+                <h4>
+                    Personally, I can't think of a better way to create interest in computer hardware and logic among students than
+                    to put the student directly inside the inner workings of a computer.
+                </h4>
+            </div>
+        </div>
+        <h2>Current State</h2>
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/xhmaOzTlsdc" frameborder="0" allowfullscreen></iframe>
+                <h4>
+                    Above is a video of the current state of the project as of February 21, 2017
+                </h4>
+            </div>
+        </div>
+        <h2>Project Goals</h2>
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <h4>
+                    Ultimately, I to make it possible to simulate all physically possibly circuits in VRilog (within resource constraints).
+                    As the name implies, I want to eventually make it possible to extend the simulator with custom modules defined with a Verilog-like syntax.
+                    Another main goal of the project is to experiment with intuitive virtual reality interfaces using a minimum number of physical input buttons.
+                </h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 text-center"></div>
+            <div class="col-sm-12 text-center">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <div class="panel-title">Technologies in Use</div>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="list-group ">
+                            <li class="list-group-item"> Unity3D Game Engine </li>
+                            <li class="list-group-item"> C# / .NET (In the form of <a href="http://www.mono-project.com/">Mono</a>)</li>
+                            <li class="list-group-item"> SteamVR API</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4 text-center"></div>
+        </div>
+
+        </br><hr>
+        <h6>Chris Boudreaux, 2017</h6>
+    </div>
+</body>
+</html>

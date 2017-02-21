@@ -7,11 +7,15 @@ function createNavbar(){
                 '<li id="AboutMeTab">' +
                     '<a href="index.html"><span class="glyphicon glyphicon-user"></span>About Me</a>' +
                 '</li>'+
-                '<li id="ProjectsTab" class="disabled">'+
-                    '<a><span class="glyphicon glyphicon-pencil"></span>Projects Overview</a>'+
+                '<li id="ProjectsTab">'+
+                    '<a type="button" id="projectDropdown" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-pencil"></span>Projects Overview<span class="glyphicon glyphicon-triangle-bottom"></span></a>' +
+                    '<ul class="dropdown-menu">' +
+                        '<li><a href="vrilog.html">VRilog</a></li>' +
+                        //'<li><a href="sorting.html">MoveInVR</a></li>' +
+                    '</ul>' +
                 '</li>'+
                 '<li id="LiveDemoTab">' +
-                    '<a type="button" id="liveDemoDropdown" data-toggle="dropdown" aria-expande="false"><span class="glyphicon glyphicon-console"></span>Live Javascript Demos<span class="glyphicon glyphicon-triangle-bottom"></span></a>'+
+                    '<a type="button" id="liveDemoDropdown" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-console"></span>Live Javascript Demos<span class="glyphicon glyphicon-triangle-bottom"></span></a>'+
                     '<ul class="dropdown-menu">' +
                         '<li><a href="cellular.html">Cellular Automata </a></li>'+
                         '<li><a href="sorting.html">Sorting Algorithms </a></li>' +
