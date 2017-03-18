@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel='shortcut icon' href='favicon.ico' type='image/x-icon' />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="navbar.js"></script>
+    <title>VRilog</title>
+</head>
+<body>
+    <div id="NavBarHolder">
+    </div>
+    <script>
+        $('#NavBarHolder').html(createNavbar());
+        setActiveTab("Projects");
+    </script>
+    <div class="container">
+        <h2>OpenGL Flocking Behavior Project</h2>
+        <div class="row">
+            <div class="col-sm-12">
+                <h4>
+                    This is a project that I worked on for a course on computer graphics at University of Louisiana at Lafayette.
+                </h4>
+                <h4>
+                    It was developed incrementally over the course of one semester, going from learning how to set up a triangle strip
+					to developing a scene graph to maintain the positions of objects within a complex scene. Here, the result of the 
+					final assignment is a textured planet with a textured sky sphere. Flying around the planet are from 50 to 100 agents
+					adhering to the flocking behavior principles described at <a href="https://en.wikipedia.org/wiki/Flocking_(behavior)"> Wikipedia </a>
+					with some adjustments and addtional parameters added to account for prioritizing influences and avoiding obstacles (red spehres).
+					Additionally, it can be viewed in 3D, but was originally configured for a 46 inch 3DTV, so things may look strange or scaled improperly
+					on a smaller monitor.
+                </h4>
+            </div>
+        </div>
+        <h2>Video</h2>
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/qqLNzegnNQA" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 text-center"></div>
+            <div class="col-sm-12 text-center">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <div class="panel-title">Technologies in Use</div>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="list-group ">
+                            <li class="list-group-item"> Visual C++ </li>
+                            <li class="list-group-item"> OpenGL </li>
+                            <li class="list-group-item"> Graphics Math Template Library <a href="http://ggt.sourceforge.net/">(GMTL)</a></li>
+							<li class="list-group-item"> <a href="http://www.glfw.org/index.html">GLFW </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4 text-center"></div>
+        </div>
+
+        </br><hr>
+        <h6>Chris Boudreaux, 2017</h6>
+    </div>
+</body>
+</html>

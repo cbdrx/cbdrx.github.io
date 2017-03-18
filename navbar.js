@@ -11,7 +11,7 @@ function createNavbar(){
                     '<a type="button" id="projectDropdown" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-pencil"></span>Projects Overview<span class="glyphicon glyphicon-triangle-bottom"></span></a>' +
                     '<ul class="dropdown-menu">' +
                         '<li><a href="vrilog.html">VRilog</a></li>' +
-                        //'<li><a href="sorting.html">MoveInVR</a></li>' +
+                        '<li><a href="opengl.html">OpenGL Flocking</a></li>' +
                     '</ul>' +
                 '</li>'+
                 '<li id="LiveDemoTab">' +
