@@ -56,7 +56,6 @@ $(document).ready(function() {
 
   // Returns true if a cell's value is 0
   function cellNotEmpty(grid, x, y) {
-    // console.log(x+","+y);
     return (grid[x][y] != 0);
   }
 
@@ -65,386 +64,58 @@ $(document).ready(function() {
   // cell (0,0) has only neighbors (0,1),(1,0), and (1,1)
   // Returns: the integer number of neighbors the cell has
   function getNumberOfNeighborsNoWrap(grid, x, y, countIfFunction) {
-    // consoleDebugGrid(grid);
-    var i, count;
+    var xCursor, yCursor, count;
     count = 0;
-    // try {
-    if (x > 0 && x < grid.length - 1 && y > 0 && y < grid[0].length - 1) {
-      if (countIfFunction(grid, x - 1, y - 1)) {
-        count++;
+    for (xCursor = Math.max(x - 1, 0);
+         xCursor <= x + 1 && xCursor < grid.length; xCursor += 1) {
+      for (yCursor = Math.max(y - 1, 0);
+           yCursor <= y + 1 && yCursor < grid[0].length; yCursor += 1) {
+        if (xCursor == x && yCursor == y) {
+          continue;
+        }
+        if (countIfFunction(grid, xCursor, yCursor)) {
+          count++;
+        }
       }
-      if (countIfFunction(grid, x - 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x - 1, y + 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, y + 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y + 1)) {
-        count++;
-      }
-    } else if (x == 0 && y == 0) {
-      if (countIfFunction(grid, x, y + 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y + 1)) {
-        count++;
-      }
-    } else if (x == 0 && y == grid.length - 1) {
-      if (countIfFunction(grid, x, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y)) {
-        count++;
-      }
-    } else if (x == grid.length - 1 && y == 0) {
-      if (countIfFunction(grid, x - 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x - 1, y + 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, y + 1)) {
-        count++;
-      }
-    } else if (x == grid.length - 1 && y == grid.length - 1) {
-      if (countIfFunction(grid, x - 1, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x - 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, y - 1)) {
-        count++;
-      }
-    } else if (x == 0) {
-      if (countIfFunction(grid, x, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, y + 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y + 1)) {
-        count++;
-      }
-    } else if (y == 0) {
-      if (countIfFunction(grid, x - 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x - 1, y + 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, y + 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y + 1)) {
-        count++;
-      }
-    } else if (x == grid.length - 1) {
-      if (countIfFunction(grid, x - 1, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x - 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x - 1, y + 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, y + 1)) {
-        count++;
-      }
-    } else if (y == grid.length - 1) {
-      if (countIfFunction(grid, x - 1, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x - 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y)) {
-        count++;
-      }
-    } else {
-      console.log('Oh god?');
     }
     return count;
+  }
+
+  // Ensures the placement of an index within a range, as if the array
+  // were circular.
+  function getWrapIndex(index, maxIndex) {
+    if (index < 0) {
+      return maxIndex;
+    }
+    if (index > maxIndex) {
+      return 0;
+    }
+    return index;
   }
 
   // Gets the number of non-empty neighbors a cell has with grid wrapping: ie,
   // cell (0,0) has its top-left neighbor in the bottom-right of the grid
   // Returns: the integer number of neighbors the cell has
   function getNumberOfNeighborsWithWrap(grid, x, y, countIfFunction) {
-    // consoleDebugGrid(grid);
-    var i, count;
+    var xCursor, yCursor, usedX, usedY, count, xLastIndex, yLastIndex;
     count = 0;
-    // try {
-    if (x > 0 && x < grid.length - 1 && y > 0 && y < grid[0].length - 1) {
-      if (countIfFunction(grid, x - 1, y - 1)) {
-        count++;
+    xLastIndex = grid.length - 1;
+    yLastIndex = grid[0].length - 1;
+
+    for (xCursor = x - 1; xCursor <= x + 1; xCursor += 1) {
+      for (yCursor = y - 1; yCursor <= y + 1; yCursor += 1) {
+        if (xCursor == x && yCursor == y) {
+          continue;
+        }
+        if (countIfFunction(
+                grid,
+                getWrapIndex(xCursor, xLastIndex),
+                getWrapIndex(yCursor, yLastIndex),
+                )) {
+          count++;
+        }
       }
-      if (countIfFunction(grid, x - 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x - 1, y + 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, y + 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y + 1)) {
-        count++;
-      }
-    } else if (x == 0 && y == 0) {
-      if (countIfFunction(grid, grid.length - 1, grid[0].length - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, grid.length - 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, grid.length - 1, y + 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, grid[0].length - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, y + 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, grid[0].length - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y + 1)) {
-        count++;
-      }
-    } else if (x == 0 && y == grid.length - 1) {
-      if (countIfFunction(grid, grid.length - 1, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, grid.length - 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, grid.length - 1, 0)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, 0)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, 0)) {
-        count++;
-      }
-    } else if (x == grid.length - 1 && y == 0) {
-      if (countIfFunction(grid, x - 1, grid[0].length - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x - 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x - 1, y + 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, grid[0].length - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, y + 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, 0, grid[0].length - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, 0, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, 0, y + 1)) {
-        count++;
-      }
-    } else if (x == grid.length - 1 && y == grid.length - 1) {
-      if (countIfFunction(grid, x - 1, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x - 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x - 1, 0)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, 0)) {
-        count++;
-      }
-      if (countIfFunction(grid, 0, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, 0, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, 0, 0)) {
-        count++;
-      }
-    } else if (x == 0) {
-      if (countIfFunction(grid, grid.length - 1, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, grid.length - 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, grid.length - 1, y + 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, y + 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y + 1)) {
-        count++;
-      }
-    } else if (y == 0) {
-      if (countIfFunction(grid, x - 1, grid[0].length - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x - 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x - 1, y + 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, grid[0].length - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, y + 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, grid[0].length - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y + 1)) {
-        count++;
-      }
-    } else if (x == grid.length - 1) {
-      if (countIfFunction(grid, x - 1, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x - 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x - 1, y + 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, y + 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, 0, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, 0, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, 0, y + 1)) {
-        count++;
-      }
-    } else if (y == grid.length - 1) {
-      if (countIfFunction(grid, x - 1, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x - 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x - 1, 0)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x, 0)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y - 1)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, y)) {
-        count++;
-      }
-      if (countIfFunction(grid, x + 1, 0)) {
-        count++;
-      }
-    } else {
-      console.log('Oh god?');
     }
-
-
-    //} catch (e) {
-    //  console.log("the grid was less than 3x3");
-    //}
     return count;
   }
 
@@ -453,7 +124,6 @@ $(document).ready(function() {
   // https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
   function GOLWithWrapRule(grid, x, y) {
     var neighbors = getNumberOfNeighborsWithWrap(grid, x, y, cellNotEmpty);
-    // console.log("grid["+x+"]["+y+"] numNeighbors= "+ neighbors);
     switch (neighbors) {
       case 0:
       case 1:
@@ -479,7 +149,6 @@ $(document).ready(function() {
 
   function GOLNoWrapRule(grid, x, y) {
     var neighbors = getNumberOfNeighborsNoWrap(grid, x, y, cellNotEmpty);
-    // console.log("grid["+x+"]["+y+"] numNeighbors= "+ neighbors);
     switch (neighbors) {
       case 0:
       case 1:
@@ -755,7 +424,6 @@ $(document).ready(function() {
         break;
       }
     }
-    console.log(selected + ' was selected');
     switch (selected) {
       case '0': {
         currentRule = GOLNoWrapRule;
@@ -794,7 +462,6 @@ $(document).ready(function() {
   // drawing the grid and evolving it
   $('#playPause').click(function() {
     if (paused) {
-      console.log('Unpausing');
       paused = false;
       theInterval = window.setInterval(function() {
         var i = 0;
@@ -807,7 +474,6 @@ $(document).ready(function() {
       }, timePerFrame);
     } else {
       window.clearInterval(theInterval);
-      console.log('Pausing');
       paused = true;
       window.clearInterval(theInterval);
     }
@@ -815,7 +481,6 @@ $(document).ready(function() {
 
   function getNumberOfCellsWide() {
     var userValue = document.getElementById('numCells').value;
-    console.log(userValue);
     if (userValue != '') {
       if (userValue < 10) {
         alert('10 is the minimum');
@@ -831,7 +496,6 @@ $(document).ready(function() {
 
   function getTimeStep() {
     var userValue = document.getElementById('stepToDrawAt').value;
-    // console.log(userValue);
     if (userValue != '') {
       if (userValue < 1) {
         alert('1 is the minimum generations per frame');
@@ -844,7 +508,6 @@ $(document).ready(function() {
 
   function getTimeBetween() {
     var userValue = document.getElementById('msPerFrame').value;
-    // console.log(userValue);
     if (userValue != '') {
       if (userValue < 50) {
         alert('50 is the minimum ms per frame');
