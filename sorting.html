@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <link rel='shortcut icon' href='favicon.ico' type='image/x-icon'/>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-  <script src="navbar.js"></script>
-  <script src="sorting.js"></script> 
-  <title>Sorting Algorithms</title>
+    <link rel='shortcut icon' href='favicon.ico' type='image/x-icon' />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="navbar.js"></script>
+    <script src="sorting.js"></script>
+    <title>Sorting Algorithms</title>
 </head>
+
 <body>
     <div id="NavBarHolder">
     </div>
@@ -16,34 +18,41 @@
         $('#NavBarHolder').html(createNavbar());
         setActiveTab("LiveDemo");
     </script>
-  <div class="container text-center">
-    <h2>Sorting Algorithms, Visualized</h2>
-    <div class="row">
-        <div class="col-sm-12">
-            <canvas id="canvas" width="500"></canvas>
+    <div class="container text-center">
+        <h2>Sorting Algorithms, Visualized</h2>
+        <div class="row">
+            <div class="col-sm-12">
+                <canvas id="canvas" width="500"></canvas>
+            </div>
         </div>
-    </div>
         <div id="controls">
-            Number of Elements: <input id = "numElements" type="number" min-"3"/> </br>
-            Draw Every <input id = "msPerFrame" type="number" min-"5" /> ms </br>
-            <input type="radio" name="alg" value="0" checked="checked"/> Bubble Sort </br>
-            <input type="radio" name="alg" value="1"/> Optimized Bubble Sort </br>
+            Number of Elements: <input id="numElements" type="number" min-"3" /> </br>
+            Draw Every <input id="msPerFrame" type="number" min-"5" /> ms </br>
+            <input type="radio" name="alg" value="0" checked="checked" /> Bubble Sort </br>
+            <input type="radio" name="alg" value="1" /> Optimized Bubble Sort </br>
             <button id="playPause" type="button">PLAY </button>
-            <button id="newSort" type="button"> NEW SORT </button></br><hr>
+            <button id="newSort" type="button"> NEW SORT </button></br>
+            <hr>
         </div>
-            <p>
+        <p>
             This HTML Canvas and Javascript shows the steps of the selected sorting algorithm.
             Green highlights represent comparisons that do not need a swap, while red ones
             represent comparisons that lead to a swap. Coming Soon:
-            </p>
-            <ul class="list-group">
-                <li class="list-group-item">Cleaner Rendering<span style="color:firebrick" class="glyphicon glyphicon-minus"></span></li>
-                <li class="list-group-item">Merge Sort<span style="color:firebrick" class="glyphicon glyphicon-minus"></span></li>
-                <li class="list-group-item">Bogosort<span style="color:firebrick" class="glyphicon glyphicon-minus"></span></li>
-                <li class="list-group-item">Optimizations<span style="color:firebrick" class="glyphicon glyphicon-minus"></span></li>
-            </ul>
-        </br><hr>
-    <h6>Chris Boudreaux, 2017</h6>
-  </div>
+        </p>
+        <ul class="list-group">
+            <li class="list-group-item">Cleaner Rendering<span style="color:firebrick"
+                    class="glyphicon glyphicon-minus"></span></li>
+            <li class="list-group-item">Merge Sort<span style="color:firebrick"
+                    class="glyphicon glyphicon-minus"></span></li>
+            <li class="list-group-item">Bogosort<span style="color:firebrick" class="glyphicon glyphicon-minus"></span>
+            </li>
+            <li class="list-group-item">Optimizations<span style="color:firebrick"
+                    class="glyphicon glyphicon-minus"></span></li>
+        </ul>
+        </br>
+        <hr>
+        <h6>Chris Boudreaux, 2017</h6>
+    </div>
 </body>
+
 </html>
